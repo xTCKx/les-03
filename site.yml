@@ -1,0 +1,16 @@
+---
+- name: taken importeren
+  hosts: all
+  become: true
+
+  roles: 
+  - role_firewall
+
+  tasks:
+  - name: taken importeren (static)
+    import_tasks: static_tasks.yml
+    when: ansible_os_family == "Archlinux"
+
+  - name: taken importeren (dynamisch)
+    include_tasks: dynamic_tasks.yml
+    when: ansible_os_family == "Archlinux"

@@ -1,0 +1,10 @@
+---
+  - name: install curl
+    package:
+      name: curl
+      state: present
+
+  - name: install git
+    package:
+      name: git
+      state: present

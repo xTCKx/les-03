@@ -1,0 +1,32 @@
+--- 
+- name: install ufw
+  apt:
+    name: ufw
+    state: present
+  become: true
+
+- name: enable firewall
+  ufw:
+    state: enabled
+    policy: deny
+    direction: incoming
+  become: true
+  notify:
+    - restart ufw
+
+
+
+- name: poort 8080 open zetten
+  ufw:
+    rule: allow
+    port: 8080
+    proto: tcp
+    state: enabled
+
+## Poorten 22 is voor ssh
+- name: poort 22 open zetten
+  ufw:
+    rule: allow
+    port: 22
+    proto: tcp
+    state: enabled
