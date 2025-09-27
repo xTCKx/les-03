@@ -1,0 +1,67 @@
+---
+- name: Configure MOTD
+  hosts: all
+  become: true
+  vars:
+    motd_message: "Welkom bij het lab"
+  
+  tasks:
+    - name: Set MOTD message
+      copy:
+        content: "{{ motd_message }}"
+        dest: /etc/motd
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: app naam
+      copy:
+        content: "Application:{ app_name }}"
+        dest: /etc/app.conf
+        owner: root
+        group: root
+        mode: '0644'
+    
+    - name: uname
+      command: uname -r
+      register: kernel_version
+      changed_when: false
+
+    - name: Schrijf kernel versie naar bestand
+      copy:
+        content: "{{ kernel_version.stdout }}"
+        dest: /tmp/kernel.txt
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Distributienaam opslaan
+      copy:
+        content: "{{ ansible_distribution }} "
+        dest: /tmp/facts.txt
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: install alleen op ubuntu
+      apt:
+        name: "curl"
+        state: present
+      when: ansible_distribution == "Ubuntu"
+
+    - name: install alleen op Red Hat
+      yum:
+        name: curl
+        state: present
+      when: ansible_distribution == "Red Hat"
+
+    - name: check hosts file
+      stat:
+        path: /etc/hosts
+      register: hosts_file_stat
+      failed_when: not hosts_file_stat.stat.exists
+
+    - name: echo hallo
+      debug:
+        msg: echo "hallo" 
+      changed_when: false
