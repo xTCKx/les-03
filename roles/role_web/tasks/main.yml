@@ -1,0 +1,21 @@
+---
+- name: Install Nginx
+  apt:
+    name: nginx
+    state: present
+  become: true
+
+- name: Change Nginx port naar 8080
+  ansible.builtin.lineinfile:
+    path: /etc/nginx/sites-available/default
+    regexp: '^\s*listen\s+80;'
+    line: '    listen {{ nginx_port }};'
+    backup: yes
+
+- name: Nginx web-page aanpassen
+  ansible.builtin.template:
+    src: index.html.j2
+    dest: /var/www/html/index.html
+    mode: '0644'
+  notify:
+    - restart nginx

@@ -1,0 +1,8 @@
+---
+- hosts: web
+  roles:
+    - role_web
+
+- hosts: db
+  roles:
+    - role_db
