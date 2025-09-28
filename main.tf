@@ -30,9 +30,9 @@ resource "esxi_guest" "web-vm" {
   }
 
   guestinfo = {
-    "metadata"          = filebase64("metadata.yaml")
+    "metadata"          = filebase64("metadata.yml")
     "metadata.encoding" = "base64"
-    "userdata"          = filebase64("userdata.yaml")
+    "userdata"          = filebase64("userdata.yml")
     "userdata.encoding" = "base64"
   }
 }
@@ -49,23 +49,19 @@ resource "esxi_guest" "db-vm" {
   }
 
   guestinfo = {
-    "metadata"          = filebase64("metadata.yaml")
+    "metadata"          = filebase64("metadata.yml")
     "metadata.encoding" = "base64"
-    "userdata"          = filebase64("userdata.yaml")
+    "userdata"          = filebase64("userdata.yml")
     "userdata.encoding" = "base64"
   }
 }
 
 # Genereer inventory
 resource "local_file" "inventory" {
-  content  = templatefile("${path.module}/inventory.ini.tpl", { 
-    web = esxi_guest.web-vm 
-    db = esxi_guest.db-vm
+  content  = templatefile("${path.module}/inventory.ini.tpl", {
+    web_vms = esxi_guest.web-vm
+    db_vms = esxi_guest.db-vm
   })
   filename = "${path.module}/inventory.ini"
-  
-}
 
-output "vm_ip" {
-  value = "${esxi_guest.web-vm.ip_address} ${esxi_guest.db-vm.ip_address}"
 }

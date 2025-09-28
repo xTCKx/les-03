@@ -1,8 +1,10 @@
 ---
 - hosts: web
+  become: yes
   roles:
     - role_web
 
 - hosts: db
+  become: yes
   roles:
-    - role_db
+    - xTCKx.ansible_role_db
