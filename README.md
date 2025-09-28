@@ -9,7 +9,7 @@ terraform apply
 
 De VM wordt gemaakt op de ESXi met cloud-init configuratie via `metadata.yaml` en `userdata.yaml`.
 
-## Ansible Configuration
+## Ansible Configuratie
 Ansible is configureerd via `ansible.cfg` om de automitisch gegenereerde `inventory.ini` van Terraform te gebruiken.
 
 Run het playbook:
